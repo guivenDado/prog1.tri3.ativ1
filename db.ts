@@ -13,12 +13,12 @@ const query = db.query(`
 
 const query1 = db.query(`
     CREATE TABLE IF NOT EXISTS ficha (
-        id              INTEGER PRIMARY KEY AUTOINCREMENT,
-        PV              INT,
-        PE              INT,
-        nome            TEXT NOT NULL UNIQUE,
-        classe          TEXT NOT NULL UNIQUE,
-        habilidades     TEXT NOT NULL
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        PV INTEGER NOT NULL DEFAULT 10,
+        PE INTEGER NOT NULL DEFAULT 5,
+        nome TEXT NOT NULL,
+        classe TEXT NOT NULL,
+        habilidades TEXT NOT NULL DEFAULT ''
     );
 `);
 
