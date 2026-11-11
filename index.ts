@@ -5,20 +5,26 @@
 // [U]pdate   update             patch
 // [D]elete   delete             delete
 
-import { db } from "./db"
+import login from "./index.html"
+import home from "./home.html"
+import {db} from "./db"
 
 const srv = Bun.serve({
     port: 3000,
     routes: {
+        "/": login,
+        "/home": home,
+
         "/user": {
             GET: () => {
                 const query = db.query(`SELECT * FROM users`)
                 const data = query.all()
+                
                 return Response.json(data)
             },
 
             POST: async (req) => {
-                const body = await req.body.json()
+                const body = await req.body?.json()
                 const query = db.query(`
                     INSERT INTO users(username, email, password_hash)
                     VALUES(:username, :email, :password_hash)
@@ -44,7 +50,7 @@ const srv = Bun.serve({
             },
 
             PUT: async (req) => {
-                const body = await req.body.json()
+                const body = await req.body?.json()
                 const query = db.query(`
                     UPDATE users SET 
                     username = :username, 
@@ -71,13 +77,14 @@ const srv = Bun.serve({
 
         "/ficha": {
             GET: () => {
-                const query = db.query(`SELECT * FROM fichas`)
+                const query = db.query(`SELECT * FROM ficha`)
                 const data = query.all()
+
                 return Response.json(data)
             },
 
             POST: async(req) => {
-                const body = await req.body.json()
+                const body = await req.body?.json()
                 const query = db.query(`
                     INSERT INTO ficha(id, PV, PE, nome, classe, habilidades)
                     VALUES(:PV, :PE, :classe, habilidades)
@@ -107,7 +114,7 @@ const srv = Bun.serve({
         },
 
             PUT: async (req) => {
-                const body = await req.body.json()
+                const body = await req.body?.json()
                 const query = db.query(`
                 UPDATE ficha SET 
                 habilidade = :habilidade, 
@@ -137,3 +144,5 @@ const srv = Bun.serve({
         },
     }
 })
+
+console.log(`${srv.url}`)
